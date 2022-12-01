@@ -1,61 +1,41 @@
 import numpy as np
 import pandas as pd
+
 class MLR:
-
-    # def __init__(self,x1, x2, x3, y):
-    #      self.x1 = x1
-    #      self.x2 = x2
-    #      self.y = y
-
-    #      self.sumY = np.array([]) #Sumatoria de Y
-    #      self.sumX1 = np.array([]) #Sumatoria de Y
-    #      self.sumX2 = np.array([]) #Sumatoria de Y
-    #      self.sumX2 = np.array([]) #Sumatoria de Y
-    #      self.sumX1sqr = np.array([]) #Sumatoria de x1^2
-    #      self.sumX2sqr = np.array([]) #Sumatoria de x2^2
-    #      self.sumYsqr = np.array([]) #Sumatoria de y^2
-    #      self.sumX1X2 = np.array([]) #Sumatoria de X1 * X2
-    #      self.sumX1Y = np.array([]) #Sumatoria de X1 * Y
-    #      self.sumX2Y = np.array([]) #Sumatoria de X2 * Y
-        
-        #  self.avrgX = np.array([]) #Promedio de X
-        #  self.avrgY = np.array([]) # Promedio de Y
-        
-        #  self.n = np.array([]) #Número de datos
-        #  self.a = np.array([]) #Ordenada con el eje y
-        #  self.b = np.array([]) #Pendiente de la recta
     
     def __init__(self, dataSet):
+
         self.dataSet = dataSet
-        # self.n = len(self.dataSet.count()) - 1
-        self.x = pd.DataFrame(dataSet[['TV', 'Radio', 'Newspaper']])
-        self.sumY = sum(self.dataSet['Sales'])
+        self.columns = len(dataSet.count())
+        self.n = self.dataSet['Sales'].count()
 
-    # def calculateSumY(self):
+        self.sumY = sum(dataSet['Sales'])
+        self.sumX1 = sum(dataSet['TV'])
+        self.sumX2 = sum(dataSet['Radio'])
+        self.sumX3 = sum(dataSet['Newspaper'])
 
-    def calculateSumX1(self):
-        self.sumX1 = sum(self.x1)
+        self.sumX1sqr = sum(pow(dataSet['TV'],2))
+        self.sumX2sqr = sum(pow(dataSet['Radio'],2))
+        self.sumX3sqr = sum(pow(dataSet['Newspaper'],2))
 
-    def calculateSumX2(self):
-        self.sumX2 = sum(self.x2)
+        self.sumX1X2 = sum(dataSet['TV'] * dataSet['Radio'] ) 
+        self.sumX1X3 = sum(dataSet['TV'] * dataSet['Newspaper'])
+        self.sumX2X1 = sum(dataSet['Radio'] * dataSet['TV'])
+        self.sumX2X3 = sum(dataSet['Radio'] * dataSet['Newspaper'])
+        self.sumX3X1 = sum(dataSet['Newspaper'] * dataSet['TV'])
+        self.sumX3X2 = sum(dataSet['Newspaper'] * dataSet['Radio'])
 
-    def calculateSumX1sqr(self):
-        self.sumX1sqr = pow(self.x1, 2)
-        self.sumX1sqr = sum(self.sumX1sqr)
-      
-    def calculateSumX2sqr(self):
-        self.sumX2sqr = pow(self.x2, 2)
-        self.sumX2sqr = sum(self.sumX2sqr)
-      
-    def calculateSumX1X2(self):
-        self.sumXY = sum(np.multiply(self.x1, self.y2))
+        self.sumX1Y = sum(dataSet['TV'] * dataSet['Sales'])
+        self.sumX2Y = sum(dataSet['Radio'] * dataSet['Sales'])
+        self.sumX3Y = sum(dataSet['Newspaper'] * dataSet['Sales'])
 
-    def calculateSumX1Y(self):
-        self.sumXY = sum(np.multiply(self.x1, self.y))
+        self.data = {'col1': [self.n, self.sumX1, self.sumX2, self.sumX3] , 'col2': [self.sumX1, self.sumX1sqr, self.sumX1X2, self.sumX1X3 ] ,
+                     'col3':[self.sumX2, self.sumX1X2, self.sumX2sqr, self.sumX2X3] , 'col4':[self.sumX3, self.sumX3X1, self.sumX3X2, self.sumX3sqr]}
 
-    def calculateSumX2Y(self):
-        self.sumXY = sum(np.multiply(self.x1, self.y))
-       
+        self.matrix = pd.DataFrame(data=self.data)
+        self.vector = pd.DataFrame(data={'col':[self.sumY, self.sumX1Y, self.sumX2Y, self.sumX3Y]})
+
+        self.staggeringMatrix = pd.DataFrame(data={'col1':[1,0,0,0],'col2':[0,1,0,0],'col3':[0,0,1,0],'col4':[0,0,0,1]})
+        
     
 
-    
